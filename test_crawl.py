@@ -32,5 +32,19 @@ class TestCrawl(unittest.TestCase):
         exptected = "Learn to code by building real projects."
         self.assertEqual(actual, exptected)
 
+    def test_get_h1_from_html_file(self):
+        with open('index.html', 'r') as f:
+            html_content = f.read()
+        h1 = get_h1_from_html(html_content)
+        expected_h1 = "Welcome to Boot.dev!"
+        self.assertEqual(h1, expected_h1)
+    
+    def test_get_first_paragraph_from_html_file(self):
+        with open('index.html', 'r') as f:
+            html_content = f.read()
+        paragraph = get_first_paragraph_from_html(html_content)
+        expected_paragraph = "Learn to code by building real projects."
+        self.assertEqual(paragraph, expected_paragraph)
+
 if __name__ == "__main__":
     unittest.main()

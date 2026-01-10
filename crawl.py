@@ -35,14 +35,16 @@ html_test2 = '''<html><body>
             </body></html>'''
 
 # print(get_h1_from_html(html_test2))
-# print(get_first_paragraph_from_html(html_test2))
+
 
 # Get content from file 
 
 with open('index.html', 'r') as f:
     html_content = f.read()
 
-print(html_content)
+print(get_first_paragraph_from_html(html_content))
+
+# print(html_content)
 
 
 # class PageScraper:
