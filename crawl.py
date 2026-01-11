@@ -1,4 +1,4 @@
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 from bs4 import BeautifulSoup
 
 def normalize_url(absolute_uri):
@@ -22,27 +22,20 @@ def get_first_paragraph_from_html(html):
 
 def get_urls_from_html(html, base_url):
     soup = BeautifulSoup(html, 'html.parser')
+    absolute_urls = []
     anchor_elements = soup.find_all('a')
-    return [anchor_elements]
+
+    for anchor in anchor_elements:
+        anchor_href = anchor.get('href')
+        absolute_url = urljoin(base_url, anchor_href)
+        absolute_urls.append(absolute_url)
+
+    return absolute_urls
 
 with open('index.html', 'r') as f:
     html_content = f.read()
 
+# manual tests
 absolute_url = "https://blog.boot.dev"
-relative_url = "/posts/1"
 
-soup = BeautifulSoup(html_content, 'html.parser')
-print(soup.find_all('a'))
-print(soup.find('a').get('href'))
-
-print(urljoin(absolute_url, relative_url))
-
-def is_absolute(url):
-    """Check if a URL is absolute by verifying the scheme and network location."""
-    parsed_url = urlparse(url)
-    return bool(parsed_url.scheme and parsed_url.netloc)
-
-if is_absolute(relative_url):
-    print(relative_url)
-else:
-    absolute = urljoin(absolute_url, relative_url)
+print(get_urls_from_html(html_content, absolute_url))
