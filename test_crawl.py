@@ -1,5 +1,5 @@
 import unittest
-from crawl import normalize_url, get_h1_from_html, get_first_paragraph_from_html, get_urls_from_html
+from crawl import normalize_url, get_h1_from_html, get_first_paragraph_from_html, get_urls_from_html, get_images_from_html
 
 class TestCrawl(unittest.TestCase):
     @classmethod
@@ -57,6 +57,17 @@ class TestCrawl(unittest.TestCase):
         actual = get_urls_from_html(html_input, absolute_url)
         expected = ["https://blog.boot.dev/posts/1", "https://blog.boot.dev/posts/2"]
         print(f"Actual url: {actual} - Expected: {expected}")
+        self.assertEqual(actual, expected)
+    
+    def test_get_images_from_html(self):
+        absolute_url = "https://blog.boot.dev"
+        html_input = """<body>
+                    <img src="/logo2.png" alt="Boot.dev Logo"/>
+                    <a href='/posts/2'>Go to Boot.dev</a>
+                    <img src="/logo.png" alt="Logo">
+                    </body>"""
+        actual = get_images_from_html(html_input, absolute_url)
+        expected = ["https://blog.boot.dev/logo2.png", "https://blog.boot.dev/logo.png"]
         self.assertEqual(actual, expected)
 
 if __name__ == "__main__":

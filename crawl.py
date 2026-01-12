@@ -32,10 +32,20 @@ def get_urls_from_html(html, base_url):
 
     return absolute_urls
 
+def get_images_from_html(html, base_url):
+    soup = BeautifulSoup(html, 'html.parser')
+    absolute_urls = []
+    images = soup.find_all('img')
+    for img in images:
+        image_src = img.get('src')
+        absolute_url = urljoin(base_url, image_src)
+        absolute_urls.append(absolute_url)
+    
+    return absolute_urls
+
 with open('index.html', 'r') as f:
     html_content = f.read()
 
-# manual tests
-absolute_url = "https://blog.boot.dev"
+input_url = "https://blog.boot.dev"
 
-print(get_urls_from_html(html_content, absolute_url))
+print(get_images_from_html(html_content, input_url))
