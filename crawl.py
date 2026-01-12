@@ -34,19 +34,6 @@ def get_urls_from_html(html, base_url):
 
     return absolute_urls
 
-# input_url = "blog.boot.dev"
-# scheme = urlparse(input_url).scheme
-
-# if not scheme:
-#     print("No scheme - add https://")
-#     absolute_url = f"https://{input_url}"
-#     print(absolute_url)
-
-# with open('index.html', 'r') as f:
-#     html_content = f.read()
-
-
-
 def get_images_from_html(html, base_url):
     soup = BeautifulSoup(html, 'html.parser')
     absolute_urls = []
@@ -57,3 +44,27 @@ def get_images_from_html(html, base_url):
         absolute_urls.append(absolute_url)
     
     return absolute_urls
+
+def extract_page_data(html, page_url):
+    # Extract url, h1, first_paragraph, outgoing_links, image_urls
+    html_contents = {}
+    soup = BeautifulSoup(html, 'html.parser')
+    
+    html_contents['url'] = page_url
+    html_contents['h1'] = get_h1_from_html(html)
+    html_contents['first_paragraph'] = get_first_paragraph_from_html(html)
+    html_contents['outgoing_links'] = get_urls_from_html(html, page_url)
+    html_contents['image_urls'] = get_images_from_html(html, page_url)
+
+    return html_contents
+
+with open('index.html', 'r') as f:
+    html_content = f.read()
+
+absolute_url = 'https://blog.boot.dev'
+
+print(extract_page_data(html_content, absolute_url))
+
+    
+
+    

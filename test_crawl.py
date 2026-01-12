@@ -1,5 +1,12 @@
 import unittest
-from crawl import normalize_url, get_h1_from_html, get_first_paragraph_from_html, get_urls_from_html, get_images_from_html
+from crawl import (
+    normalize_url, 
+    get_h1_from_html, 
+    get_first_paragraph_from_html, 
+    get_urls_from_html, 
+    get_images_from_html, 
+    extract_page_data
+)
 
 class TestCrawl(unittest.TestCase):
     @classmethod
@@ -93,6 +100,15 @@ class TestCrawl(unittest.TestCase):
         actual = get_images_from_html(html_input, absolute_url)
         expected = ["https://blog.boot.dev/logo2.png", "https://blog.boot.dev/logo.png"]
         self.assertEqual(actual, expected)
+
+    def extract_page_data(self):
+        absolute_url = 'https://blog.boot.dev'
+        #input_html = self.html_content
+        actual = extract_page_data(self.html_content, absolute_url)
+        expected = {'url': 'https://blog.boot.dev', 'h1': 'Welcome to Boot.dev!', 'first_paragraph': 'Learn to code by building real projects.', 'outgoing_links': ['https://blog.boot.dev', 'https://blog.boot.dev/page1'], 'image_urls': ['https://blog.boot.dev/logo.png', 'https://blog.boot.dev/logo2.png']}
+        
+        self.assertEqual(actual, expected)
+
 
 if __name__ == "__main__":
     unittest.main()
