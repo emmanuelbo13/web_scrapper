@@ -1,19 +1,21 @@
 from urllib.parse import urlparse, urljoin
 from bs4 import BeautifulSoup
 
-def normalize_url(absolute_uri):
-    parsed_url = urlparse(absolute_uri)
+def normalize_url(input_url):
+    parsed_url = urlparse(input_url)
     netloc = parsed_url.netloc.lower()
     path = parsed_url.path or ''
     query = f"?{parsed_url.query}" if parsed_url.query else ''
     normalized_url = f"{netloc}{path}{query}"
     
-    return normalized_url
+    return normalized_url    
 
 def get_h1_from_html(html):
     soup = BeautifulSoup(html, 'html.parser')
-    title = soup.find('h1')
-    return title.get_text() if title else None
+    h1s = soup.find_all('h1')
+    for h1 in h1s:
+        h1_text = h1.get_text() if h1 else None
+    return h1_text
 
 def get_first_paragraph_from_html(html):
     soup = BeautifulSoup(html, 'html.parser')
@@ -32,6 +34,19 @@ def get_urls_from_html(html, base_url):
 
     return absolute_urls
 
+# input_url = "blog.boot.dev"
+# scheme = urlparse(input_url).scheme
+
+# if not scheme:
+#     print("No scheme - add https://")
+#     absolute_url = f"https://{input_url}"
+#     print(absolute_url)
+
+# with open('index.html', 'r') as f:
+#     html_content = f.read()
+
+
+
 def get_images_from_html(html, base_url):
     soup = BeautifulSoup(html, 'html.parser')
     absolute_urls = []
@@ -42,10 +57,3 @@ def get_images_from_html(html, base_url):
         absolute_urls.append(absolute_url)
     
     return absolute_urls
-
-with open('index.html', 'r') as f:
-    html_content = f.read()
-
-input_url = "https://blog.boot.dev"
-
-print(get_images_from_html(html_content, input_url))

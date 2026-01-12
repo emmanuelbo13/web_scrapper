@@ -47,19 +47,43 @@ class TestCrawl(unittest.TestCase):
         expected_paragraph = "Learn to code by building real projects."
         self.assertEqual(paragraph, expected_paragraph)
 
-    def test_get_urls_from_html(self):
+    def test_get_urls_from_html_absolute(self):
         # test both relative and absolute urls
         absolute_url = "https://blog.boot.dev"
         html_input = """<body>
-                    <a href='/posts/1'>Go to Boot.dev</a>
-                    <a href='/posts/2'>Go to Boot.dev</a>
+                    <a href='https://blog.boot.dev'>Go to Boot.dev</a>
                     </body>"""
         actual = get_urls_from_html(html_input, absolute_url)
-        expected = ["https://blog.boot.dev/posts/1", "https://blog.boot.dev/posts/2"]
-        print(f"Actual url: {actual} - Expected: {expected}")
+        expected = ["https://blog.boot.dev"]
+        #print(f"Actual url: {actual} - Expected: {expected}")
+        self.assertEqual(actual, expected)
+
+    def test_get_urls_from_html_relative(self):
+        absolute_url = "https://blog.boot.dev"
+        html_input = """<body>
+                    <a href='/'>Home</a>
+                    <a href='/posts/1'>Post 1</a>
+                    </body>"""
+        actual = get_urls_from_html(html_input, absolute_url)
+        expected = ["https://blog.boot.dev/", "https://blog.boot.dev/posts/1"]
+        self.assertEqual(actual, expected)
+
+    def test_get_urls_from_html_file(self):
+        absolute_url = "https://blog.boot.dev"
+        actual = get_urls_from_html(self.html_content, absolute_url)
+        expected = ["https://blog.boot.dev", "https://blog.boot.dev/page1"]
+        self.assertEqual(actual, expected)
+
+    def test_get_images_from_html_absolute(self):
+        absolute_url = "https://blog.boot.dev"
+        html_input = """<body>
+                    <img src='https://blog.boot.dev/images/meme.png'>Home</img>
+                    </body>"""
+        actual = get_images_from_html(html_input, absolute_url)
+        expected = ["https://blog.boot.dev/images/meme.png"]
         self.assertEqual(actual, expected)
     
-    def test_get_images_from_html(self):
+    def test_get_images_from_html_relative(self):
         absolute_url = "https://blog.boot.dev"
         html_input = """<body>
                     <img src="/logo2.png" alt="Boot.dev Logo"/>
