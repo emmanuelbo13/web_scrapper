@@ -58,6 +58,19 @@ def extract_page_data(html, page_url):
 
     return html_contents
 
+import requests
+def get_html(url):
+    response = requests.get(url, headers={"User-Agent":"BootCrawler/1.0"})
+    response.raise_for_status()
+
+    content_type = response.headers.get("Content-Type", "").split(";")[0]
+    if content_type != "text/html":
+        raise ValueError(f"Invalid content type {content_type}")
+    
+    return response.text
+
+site = get_html("https://sdf.dev")
+print(site)
 
     
 
