@@ -58,20 +58,6 @@ def extract_page_data(html, page_url):
 
     return html_contents
 
-with open('index.html', 'r') as f:
-    html_content = f.read()
-
-absolute_url = 'https://blog.boot.dev'
-
-input_html = """<body>
-                    <h1>Hello, World</h1>
-                    <p>This is my first website</p>
-                    <a href='/images/meme.png'>Home</a>
-                    <a href='https://blog.boot.dev/posts/1'>Post 1</a>
-                    <img src="/images/logo.png">
-                    </body>"""
-
-print(extract_page_data(input_html, absolute_url))
 
     
 
