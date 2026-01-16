@@ -1,4 +1,7 @@
 import sys
+from crawl import (
+    get_html
+)
 
 def main():
 
@@ -13,6 +16,12 @@ def main():
     
     base_url = sys.argv[1]
     print("starting crawl for: ", base_url)
+
+    try:
+        site = get_html(base_url)
+        print(site)
+    except Exception as e:
+        print(e)
 
 if __name__ == "__main__":
     main()

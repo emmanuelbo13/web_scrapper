@@ -69,8 +69,8 @@ def get_html(url):
     
     return response.text
 
-site = get_html("https://sdf.dev")
-print(site)
+
+
 
     
 
